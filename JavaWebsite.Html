@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<link href="style.css" rel="stylesheet" type="text/css">
+
+<div class="boxed">
+    <font size="30" align="center">Java Visualization</font>
+</div>
+
+<body>
+<div class= "TextBox">
+    <h1>
+        <center id = "Title"> </center>
+    </h1>
+
+    <hr style="border-top: dotted 2.5px;" />
+
+    <div id = "Output"></div>
+</div>
+
+<div class = "Help">
+        <h1>
+            <center>So What is Happening?</center>
+        </h1>
+    
+        <hr style="border-top: dotted 2.5px;" />
+    
+        <div id= "help"></div>
+</div>
+
+<div class = "Output">
+    <h1>
+        <center>Output</center>
+    </h1>
+
+    <hr style="border-top: dotted 2.5px;" />
+
+    <div id= "output1"></div>
+</div>
+
+<div class = "previous" onclick="currentVisual.Previous()">
+        <button class="Pbutton">Previous</button>
+</div>
+<div class = "next" onclick="currentVisual.Next()">
+        <button class="Nbutton">Next</button>
+</div>
+
+<div class="dropdown">
+        <button class="dropbtn">Java Visual Type:</button>
+        <div class="dropdown-content">
+          <button href="#" onclick="JavaVisualizationFactory('Loops And Conditionals')" class = "dButton">LoopsAndConditional</button>
+          <button href="#"  onclick="JavaVisualizationFactory('Conditionals')" class = "dButton">Conditionals</button>
+          <button href="#"  onclick="JavaVisualizationFactory('While Loops')" class = "dButton">While Loops</button>
+          <button href="#"  onclick="JavaVisualizationFactory('Do-While Loops')" class = "dButton">Do-While Loops</button>
+        </div>
+ </div>
+
+<script src="https://d3js.org/d3.v5.js"></script>
+<script>
+    class JavaVisualization
+    {
+        
+        constructor(words, repeat, repeatStart,repeatEnd,currentNum,numItems, type, answers, help){}
+
+        display()
+        {
+            this.words.forEach(this.show);
+            document.getElementById("help").innerHTML = this.help[0];
+        }
+
+        show(item, index){
+            var div = document.createElement('div');
+            div.innerHTML = index + "-&emsp;" + item;
+            if(index == 0)
+            {
+                div.setAttribute("class", "Code selected");
+            }
+            else
+            {
+                div.setAttribute("class", "Code");
+            }
+
+            div.setAttribute("id", index)
+
+            document.getElementById("Output").appendChild(div)
+        }
+
+        Next(){
+            document.getElementById(this.currentNum.toString()).setAttribute("class", "Code");
+            this.currentNum++;
+            document.getElementById("help").innerHTML = this.help[this.currentNum];
+
+
+
+            if(this.answers.length != 0 && this.currentNum == this.answers[this.answers.length -1].split (",", 1))
+            {
+                if(this.type == "Loops And Conditionals")
+                {
+                    if(this.repeats % 2 == 1){
+                        var ans = this.answers.pop();
+                        var data = ans.split(",", 2);
+                        var div = document.createElement('div');
+                        div.innerHTML = data[1];
+                        document.getElementById("output1").appendChild(div);
+                    }
+                }
+
+                if(this.type == "Conditionals")
+                {
+                    var ans = this.answers.pop();
+                    var data = ans.split(",", 2);
+                    var div = document.createElement('div');
+                    div.innerHTML = data[1];
+                    document.getElementById("output1").appendChild(div);
+                }
+
+                if(this.type == "While Loops")
+                {
+                    var ans = this.answers.pop();
+                    var data = ans.split(",", 2);
+                    var div = document.createElement('div');
+                    div.innerHTML = data[1];
+                    document.getElementById("output1").appendChild(div);
+                }
+
+                if(this.type == "Do-While Loops")
+                {
+                    var ans = this.answers.pop();
+                    var data = ans.split(",", 2);
+                    var div = document.createElement('div');
+                    div.innerHTML = data[1];
+                    document.getElementById("output1").appendChild(div);
+                }
+            }
+
+            if(this.currentNum >= this.numItems)
+            {
+                JavaVisualizationFactory(this.type);
+            }
+            if(this.repeats-1 != 0)
+            {
+                if(this.currentNum > this.repeatEnd)
+                {
+                    this.currentNum = this.repeatStart;
+                    this.repeats--;
+                }
+            }
+
+            document.getElementById(this.currentNum.toString()).setAttribute("class", "Code selected");
+        }
+
+        Previous()
+        {
+            document.getElementById(this.currentNum.toString()).setAttribute("class", "Code");
+            if(this.currentNum != 0){
+                this.currentNum--;
+                document.getElementById("help").innerHTML = this.help[this.currentNum];
+            }
+            document.getElementById(this.currentNum.toString()).setAttribute("class", "Code selected");
+        }
+    }
+
+    class LoopsAndConditional extends JavaVisualization
+    {    
+        constructor(){
+            super();
+            this.words = ["public static void main(String[] args) {","&emsp;for(int i = 0; i < 5; i++){", "&emsp;&emsp;if(i%2 != 0){", "&emsp;&emsp;&emsp;System.out.println(i);", "&emsp;&emsp;}", "&emsp;}", "}"];
+            this.help = ["This is a the Main method, Usually when a program starts it begins in the main method if you are using Java!",
+            "We start with we a what we call a 'For Loop', it basically just loops the same block of code until a certain condition is met in this case when 'i' is equal to 5.",
+            "This is a condition, If the condition is met then what ever is inside the statement is executed, else it is ignored. In this case it will print the value of 'i'.",
+            "This line of code outputs a value to the console as seen below. So the current value of 'i' will be printed.",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the if statement.",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the For Loop.",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the Main method"];
+            this.answers = ["3,5","3,3","3,1"];
+            this.repeats = 5;
+            this.repeatStart = 1;
+            this.repeatEnd = 4;
+            this.type = "Loops And Conditionals";
+            this.currentNum = 0;
+            this.numItems = this.words.length;
+        }
+    }
+
+    class Conditionals extends JavaVisualization
+    {
+        constructor(){
+            super();
+            this.words = ["public static void main(String[] args) {","&emsp;int num = 10;", "&emsp;If(num == 5){" ,"&emsp;&emsp;System.out.println('True!');", "&emsp;}else{" ,"&emsp;&emsp;System.out.println('It's not five!');", "&emsp;}", "}"];
+            this.help = ["This is a the Main method, Usually when a program starts it begins in the main method if you are using Java!",
+             "Here we declaring a integer variable called 'num' and setting it equal to 10. It is important that we end it with a semicolon!",
+             "This is a condition, If the condition is met then what ever is inside the statement is executed, else it is ignored. With this example we are checking if it is equal to 5.",
+             "Since the conditional was not satisfied this line will be ignored!",
+             "A else statement excutes only if the previous conditional was not met. So now that we now our variable isn't 5 we can be sure that whatever is executed next is true!",
+             "This line prints whatever we want to be outputed; in this case we want to print that our variable isn't 5.",
+             "This is a curly bracket it signifies the end of a code block. In this case it will be the else statement.",
+             "This is a curly bracket it signifies the end of a code block. In this case it will be the Main method"];
+            this.answers = ["5, It's not five!"];
+            this.repeats = 1;
+            this.repeatStart = 0;
+            this.repeatEnd = 0;
+            this.currentNum = 0;
+            this.numItems = this.words.length;
+            this.type = "Conditionals";
+        }        
+    }
+
+    class WhileLoops extends JavaVisualization
+    {
+        constructor(){
+            super();
+            this.words = ["public static void main(String[] args) {", "&emsp;String word = 'Hello';", "&emsp;while(true){",
+             "&emsp;&emsp;System.out.println(word);","&emsp;&emsp;word = word + 'o';","&emsp;&emsp;if(word.equals('Helloooo')){",
+             "&emsp;&emsp;&emsp;break;", "&emsp;&emsp;}", "&emsp;}", "}"];
+            this.help = ["This is a the Main method, Usually when a program starts it begins in the main method if you are using Java!",
+            "Here we are declaring a string variable which is essentially any text you want to store in a variable.",
+            "This is the While-Loop, It keeps looping a block of code until the condition is no longer met or in this case when you use a break",
+            "Here we are printing the string we stored in 'word' variable",
+            "In this we are adding a 'o' to the text in the word variable",
+            "When this condition is met then the following code will be execute else it will be ignored",
+            "This ends the While-Loop. The while loop can also be stopped if the condition is not met",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the If-Statement",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the While-Loop",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the Main method"];
+            this.answers = ["3, Hellooo","3, Helloo", "3, Hello"];
+            this.repeats = 3;
+            this.repeatStart = 2;
+            this.repeatEnd = 7;
+            this.currentNum = 0;
+            this.numItems = this.words.length;
+            this.type = "While Loops";
+        }
+    }
+
+    class DoWhileLoops extends JavaVisualization
+    {
+        constructor(){
+            super();
+            this.words = ["public static void main(String[] args) {", "&emsp;int num = 0;","&emsp;boolean keepRunning = true;","&emsp;do{", "&emsp;&emsp;System.out.println(num);", "&emsp;&emsp;num++;"
+            ,"&emsp;&emsp;if(num == 7){", "&emsp;&emsp;&emsp;keepRunning = false;"
+            ,"&emsp;&emsp;}","&emsp;}while(keepRunning);","}"];
+            this.help = ["This is a the Main method, Usually when a program starts it begins in the main method if you are using Java!",
+            "Here we are declaring a integer value. At first we set it to 0.",
+            "This is called a boolean which is has either a true/false. In this case it is set to true.",
+            "This is a Do-While loop unlike other loops this one runs once and then checks the condition in the end of the loop!",
+            "Here we simply print out the 'num' variable value.",
+            "We add 1 to our 'num' variable.",
+            "When this condition is met then the following code will be execute else it will be ignored.",
+            "When the condition is met this will execute, the boolean is set to false so the do-while loop condition is no longer met.",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the If-Statement.",
+            "This is the end of the Do-While Loop. In this the condition is checked if it is not met the loop stops.",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the Main method."];
+            this.answers = ["4, 3","4, 2","4, 1","4, 0"];
+            this.repeats = 4;
+            this.repeatStart = 3;
+            this.repeatEnd = 9;
+            this.currentNum = 0;
+            this.numItems = this.words.length;
+            this.type = "Do-While Loops";
+        }
+    }
+
+    var currentVisual = new JavaVisualization();
+
+    function JavaVisualizationFactory(type)
+    {
+        document.getElementById("Output").innerHTML = "";
+        document.getElementById("output1").innerHTML = "";
+
+        if(type == "Conditionals")
+        {
+            currentVisual = new Conditionals();
+        }
+
+        if(type == "Loops And Conditionals")
+        {
+            currentVisual = new LoopsAndConditional();
+        }
+
+        if(type == "While Loops")
+        {
+            currentVisual = new WhileLoops();
+        }
+
+        if(type == "Do-While Loops")
+        {
+            currentVisual = new DoWhileLoops();
+        }
+
+        document.getElementById("Title").innerHTML = "Java Visualization: " + currentVisual.type;
+        currentVisual.display();
+    }
+
+    JavaVisualizationFactory("While Loops");
+
+    document.onkeydown = function(e)
+    {
+        switch (e.keyCode)
+        {
+            case 37:
+                currentVisual.Previous();
+                break;
+            case 39:
+                currentVisual.Next();
+                break;
+        }
+
+    }
+</script>
+</body>
+
+
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+
+<script>
+
+// set the dimensions and margins of the graph
+var width = 450
+    height = 450
+    margin = 40
+
+// The radius of the pieplot is half the width or half the height (smallest one). I substract a bit of margin.
+var radius = Math.min(width, height) / 2 - margin
+// append the svg object to the div called 'my_dataviz'
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+// Create dummy data
+var data = {a: 9, b: 20, c:30, d:8, e:12}
+
+// set the color scale
+var color = d3.scaleOrdinal()
+  .domain(data)
+  .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"])
+
+// Compute the position of each group on the pie:
+var pie = d3.pie()
+  .value(function(d) {return d.value; })
+var data_ready = pie(d3.entries(data))
+
+// Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+svg
+  .selectAll('whatever')
+  .data(data_ready)
+  .enter()
+  .append('path')
+  .attr('d', d3.arc()
+    .innerRadius(0)
+    .outerRadius(radius)
+  )
+  .attr('fill', function(d){ return(color(d.data.key)) })
+  .attr("stroke", "black")
+  .style("stroke-width", "2px")
+  .style("opacity", 0.7)
+
+</script>
+
+
+
+
+
+
+</html>
