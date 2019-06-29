@@ -2,7 +2,7 @@
     body
     {
         background: white;
-        margin: 0;
+        margin: 0 auto;
         font-family: Arial;
     }
 
@@ -10,7 +10,7 @@
         border: 30px solid lightskyblue;
         background-color:lightskyblue;
         padding: 0px;
-        margin: 0px;
+        margin: 0 auto;
         font-family: Arial;
         color:white;
         text-align: center;
@@ -20,14 +20,13 @@
     .TextBox
     {
         border: 2px solid black;
-        margin: 10px;
-        margin-right: 1250px;
-        font-size: 12px;
+        margin: 0 auto;
+        font-size: 30px;
     }
 
     .Code
     {
-        font-size: 15px;
+        font-size: 20px;
     }
     .selected
     {
@@ -38,17 +37,16 @@
     .Output
     {
         border: 2px solid black;
-        margin: 10px;
-        font-size: 12px;
-        margin-right: 1500px;
+        margin: 0 auto;
+        font-size: 20px;
         height: 200px;
     }
     .Pbutton
     {
     background-color: lightskyblue;
     color: white;
-    padding: 16px;
-    font-size: 16px;
+    padding: 24px;
+    font-size: 24px;
     border: none;
     }
     .previous
@@ -60,8 +58,8 @@
     {
     background-color: lightskyblue;
     color: white;
-    padding: 16px;
-    font-size: 16px;
+    padding: 24px;
+    font-size: 24px;
     border: none;
     }
     .next
@@ -74,8 +72,8 @@
     {
     background-color: lightskyblue;
     color: white;
-    padding: 16px;
-    font-size: 16px;
+    padding: 24px;
+    font-size: 24px;
     border: none;
     }
 
