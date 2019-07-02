@@ -51,22 +51,24 @@
           <button href="#"  onclick="JavaVisualizationFactory('Conditionals')" class = "dButton">Conditionals</button>
           <button href="#"  onclick="JavaVisualizationFactory('While Loops')" class = "dButton">While Loops</button>
           <button href="#"  onclick="JavaVisualizationFactory('Do-While Loops')" class = "dButton">Do-While Loops</button>
+          <button href="#"  onclick="JavaVisualizationFactory('For-Each Loop')" class = "dButton">For-Each Loops</button>
         </div>
  </div>
 
 <script src="https://d3js.org/d3.v5.js"></script>
 <script>
+    //class which all visualizations will inherit from
     class JavaVisualization
     {
         
         constructor(words, repeat, repeatStart,repeatEnd,currentNum,numItems, type, answers, help){}
-
+        //displays the code to the screen
         display()
         {
             this.words.forEach(this.show);
             document.getElementById("help").innerHTML = this.help[0];
         }
-
+        //gets items for displaying the code
         show(item, index){
             var div = document.createElement('div');
             div.innerHTML = index + "-&emsp;" + item;
@@ -83,7 +85,7 @@
 
             document.getElementById("Output").appendChild(div)
         }
-
+        //goes to the next line and prints output depending on the visualization
         Next(){
             document.getElementById(this.currentNum.toString()).setAttribute("class", "Code");
             this.currentNum++;
@@ -130,6 +132,15 @@
                     div.innerHTML = data[1];
                     document.getElementById("output1").appendChild(div);
                 }
+
+                if(this.type == "For-Each Loop")
+                {
+                    var ans = this.answers.pop();
+                    var data = ans.split(",", 2);
+                    var div = document.createElement('div');
+                    div.innerHTML = data[1];
+                    document.getElementById("output1").appendChild(div);
+                }
             }
 
             if(this.currentNum >= this.numItems)
@@ -147,7 +158,7 @@
 
             document.getElementById(this.currentNum.toString()).setAttribute("class", "Code selected");
         }
-
+        // goes back a line if not on the first line
         Previous()
         {
             document.getElementById(this.currentNum.toString()).setAttribute("class", "Code");
@@ -158,7 +169,7 @@
             document.getElementById(this.currentNum.toString()).setAttribute("class", "Code selected");
         }
     }
-
+    // Loops and conditionals visualization
     class LoopsAndConditional extends JavaVisualization
     {    
         constructor(){
@@ -180,7 +191,7 @@
             this.numItems = this.words.length;
         }
     }
-
+    //Conditionals visualization
     class Conditionals extends JavaVisualization
     {
         constructor(){
@@ -203,7 +214,7 @@
             this.type = "Conditionals";
         }        
     }
-
+    //While Loop visualization
     class WhileLoops extends JavaVisualization
     {
         constructor(){
@@ -230,7 +241,7 @@
             this.type = "While Loops";
         }
     }
-
+    //do-While java visualization
     class DoWhileLoops extends JavaVisualization
     {
         constructor(){
@@ -258,9 +269,30 @@
             this.type = "Do-While Loops";
         }
     }
+    //The For-Each loop visualization
+    class ForEachLoop extends JavaVisualization
+    {
+        constructor(){
+            super();
+            this.words = ["public static void main(String[] args) {", "&emsp;int[] numbers = {5,9,10};","&emsp;for(num: numbers){", "&emsp;&emsp;System.out.println(num);","&emsp;}","}"];
+            this.help = ["This is a the Main method, Usually when a program starts it begins in the main method if you are using Java!", 
+            "Here we are declaring a array of numbers that include 5,9,10.",
+            "This is a For-Each loop whichs loops through a block of code until there are no more items to loop through in the array. In this case the array 'number'.",
+            "Here we print out the value of 'num' which is a item in the number array we created.",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the For-Each Loop",
+            "This is a curly bracket it signifies the end of a code block. In this case it will be the Main method."];
+            this.answers = ["3, 10","3, 9","3, 5"];
+            this.repeats = 3;
+            this.repeatStart = 2;
+            this.repeatEnd = 4;
+            this.currentNum = 0;
+            this.numItems = this.words.length;
+            this.type = "For-Each Loop";
+        }
+    }
 
     var currentVisual = new JavaVisualization();
-
+    //The factory that creates new java visualizations depending on the input of the parameters
     function JavaVisualizationFactory(type)
     {
         document.getElementById("Output").innerHTML = "";
@@ -286,12 +318,18 @@
             currentVisual = new DoWhileLoops();
         }
 
+        if(type == "For-Each Loop")
+        {
+            currentVisual = new ForEachLoop();
+        }
+
+
         document.getElementById("Title").innerHTML = "Java Visualization: " + currentVisual.type;
         currentVisual.display();
     }
-
+    //This creates a visualization at the start of the website
     JavaVisualizationFactory("While Loops");
-
+    //Just so we can use the left and right keys on the website
     document.onkeydown = function(e)
     {
         switch (e.keyCode)
@@ -310,9 +348,6 @@
 
 
 <meta charset="utf-8">
-
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
@@ -334,9 +369,8 @@ var svg = d3.select("#my_dataviz")
     .attr("height", height)
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
 // Create dummy data
-var data = {a: 9, b: 20, c:30, d:8, e:12}
+var data = {a: 10, b: 10, c:10, d:10, e:10}
 
 // set the color scale
 var color = d3.scaleOrdinal()
@@ -362,12 +396,6 @@ svg
   .attr("stroke", "black")
   .style("stroke-width", "2px")
   .style("opacity", 0.7)
-
 </script>
-
-
-
-
-
-
 </html>
+
